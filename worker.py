@@ -85,7 +85,7 @@ class Worker:
 
 # User can pass in arguments for timeouts
 parser = argparse.ArgumentParser(description='Hatch Takehome Example')
-parser.add_argument('--timeout', type=float, default=1, help='Seconds until timeout. (Defaults 1s)')
+parser.add_argument('--timeout', type=float, default=60, help='Seconds until timeout. (Defaults 60s)')
 parser.add_argument('--maxworkers', type=int, default=10, help='Maximum number of workers. (Defaults 10)')
 args = parser.parse_args()
 timeout = args.timeout

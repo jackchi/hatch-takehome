@@ -24,7 +24,7 @@ Hatch Takehome Example
 
 optional arguments:
   -h, --help            show this help message and exit
-  --timeout TIMEOUT     Seconds until timeout. (Defaults 1s)
+  --timeout TIMEOUT     Seconds until timeout. (Defaults 60s)
   --maxworkers MAXWORKERS
                         Maximum number of workers
 ```
