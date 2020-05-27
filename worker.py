@@ -64,7 +64,7 @@ class Worker:
                     end = time.perf_counter()
                     elapsed = (end - start) * 1000 # return in ms
                     status = Status.TIMEOUT
-                    self.result_q.put((self.thread_num, elapsed, byte_cnt, status.value))
+                    self.result_q.put((self.thread_num, None, None, status.value))
                     print(f'[Thread-{self.thread_num}] TIMEOUT after searching {byte_cnt} bytes {elapsed}ms elapsed.')
                     break
 
@@ -81,7 +81,7 @@ class Worker:
             end = time.perf_counter()
             elapsed = (end - start) * 1000 # return in ms
             status = Status.FAILURE
-            self.result_q.put((self.thread_num, elapsed, byte_cnt, status.value))
+            self.result_q.put((self.thread_num, None, None, status.value))
 
 # User can pass in arguments for timeouts
 parser = argparse.ArgumentParser(description='Hatch Takehome Example')
@@ -106,5 +106,14 @@ with ThreadPoolExecutor(max_workers=max_workers) as executor:
 
 lst_results = list(result_q.queue)
 lst_results.sort(key=operator.itemgetter(1, 2, 3), reverse=True)  # sort in descending order of [time elapsed] [bytes_cnt] [status]
-print(lst_results)
+total_bytes, total_time = 0,0
+for worker_stat in lst_results:
+    print(worker_stat)
+    if worker_stat[3] == Status.SUCCESS.value:
+        total_bytes += worker_stat[2]
+        total_time += worker_stat[1]
+avg_rate = total_bytes / (total_time / 60)
+print(f'Average bytes per second is {avg_rate} ')
+
+    
 

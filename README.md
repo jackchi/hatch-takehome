@@ -29,59 +29,75 @@ optional arguments:
                         Maximum number of workers
 ```
 
+# Queue 
+
+```python
+# Using syncronous queue to pass tuples from threads
+
+queue.Queue (thread_number, time_elapsed, byte_counted, status)
+```
+
 # Sample
 
 ```bash
 $ python worker.py
 [Thread-0]: Started searching...
-[Thread-0] Found FiCo after searching 18303 bytes 3.3776569999999992ms elapsed.
+[Thread-0] Found FiCo after searching 16593 bytes 2.7950100000000004ms elapsed.
 [Thread-1]: Started searching...
-[Thread-1] Found FiCo after searching 26358 bytes 4.770211000000003ms elapsed.
+[Thread-1] Found FiCo after searching 4027 bytes 0.6900450000000002ms elapsed.
 [Thread-2]: Started searching...
-[Thread-2] Found FiCo after searching 1205 bytes 0.25209600000000026ms elapsed.
+[Thread-2] Found FiCo after searching 3796 bytes 0.6875790000000076ms elapsed.
 [Thread-3]: Started searching...
-[Thread-3] Found FiCo after searching 2985 bytes 0.615145999999997ms elapsed.
+[Thread-3] Found FiCo after searching 10438 bytes 1.9046129999999994ms elapsed.
 [Thread-4]: Started searching...
-[Thread-4] Found FiCo after searching 103915 bytes 21.335426999999996ms elapsed.
+[Thread-4] Found FiCo after searching 15090 bytes 2.474850000000001ms elapsed.
 [Thread-5]: Started searching...
-[Thread-5] Found FiCo after searching 12123 bytes 2.079235999999998ms elapsed.
+[Thread-5] Found FiCo after searching 7207 bytes 1.203836ms elapsed.
 [Thread-6]: Started searching...
-[Thread-6] Found FiCo after searching 16964 bytes 2.8636349999999893ms elapsed.
+[Thread-6] Found FiCo after searching 7666 bytes 1.3657680000000032ms elapsed.
 [Thread-7]: Started searching...
-[Thread-7] Found FiCo after searching 46474 bytes 8.250979999999991ms elapsed.
+[Thread-7] Found FiCo after searching 1205 bytes 0.23854200000000825ms elapsed.
 [Thread-8]: Started searching...
-[Thread-8] Found FiCo after searching 30077 bytes 4.938324000000008ms elapsed.
+[Thread-8] Found FiCo after searching 31189 bytes 6.1392820000000095ms elapsed.
 [Thread-9]: Started searching...
-[Thread-9] Found FiCo after searching 54186 bytes 9.21670799999999ms elapsed.
-[(4, 21.335426999999996, 103915, 'SUCCESS'), (9, 9.21670799999999, 54186, 'SUCCESS'), (7, 8.250979999999991, 46474, 'SUCCESS'), (8, 4.938324000000008, 30077, 'SUCCESS'), (1, 4.770211000000003, 26358, 'SUCCESS'), (0, 3.3776569999999992, 18303, 'SUCCESS'), (6, 2.8636349999999893, 16964, 'SUCCESS'), (5, 2.079235999999998, 12123, 'SUCCESS'), (3, 0.615145999999997, 2985, 'SUCCESS'), (2, 0.25209600000000026, 1205, 'SUCCESS')]
+[Thread-9] Found FiCo after searching 99121 bytes 17.948643999999998ms elapsed.
+(9, 17.948643999999998, 99121, 'SUCCESS')
+(8, 6.1392820000000095, 31189, 'SUCCESS')
+(0, 2.7950100000000004, 16593, 'SUCCESS')
+(4, 2.474850000000001, 15090, 'SUCCESS')
+(3, 1.9046129999999994, 10438, 'SUCCESS')
+(6, 1.3657680000000032, 7666, 'SUCCESS')
+(5, 1.203836, 7207, 'SUCCESS')
+(1, 0.6900450000000002, 4027, 'SUCCESS')
+(2, 0.6875790000000076, 3796, 'SUCCESS')
+(7, 0.23854200000000825, 1205, 'SUCCESS')
+Average bytes per second is 332313.92007863626
 ```
 
-or where `thread 9` timed out
-
-```bash
-(base)  jackchi@Chompy  ~/git/hatch-takehome  python worker.py --timeout 0.0001
-[Thread-0]: Started searching...
-[Thread-0] Found FiCo after searching 38806 bytes 6.921399000000002ms elapsed.
-[Thread-1]: Started searching...
-[Thread-1] Found FiCo after searching 95599 bytes 15.916971999999987ms elapsed.
-[Thread-2]: Started searching...
-[Thread-2] Found FiCo after searching 45634 bytes 8.780680999999998ms elapsed.
-[Thread-3]: Started searching...
-[Thread-3] Found FiCo after searching 9007 bytes 1.7785869999999981ms elapsed.
-[Thread-4]: Started searching...
-[Thread-4] Found FiCo after searching 4880 bytes 0.8359770000000016ms elapsed.
-[Thread-5]: Started searching...
-[Thread-5] Found FiCo after searching 20297 bytes 3.399789ms elapsed.
-[Thread-6]: Started searching...
-[Thread-6] Found FiCo after searching 1482 bytes 0.2548990000000029ms elapsed.
-[Thread-7]: Started searching...
-[Thread-7] Found FiCo after searching 3960 bytes 0.6817449999999975ms elapsed.
-[Thread-8]: Started searching...
-[Thread-8] Found FiCo after searching 44454 bytes 7.498829999999998ms elapsed.
-[Thread-9]: Started searching...
-[Thread-9]: TIMEOUT
-[Thread-9] TIMEOUT after searching 44488 bytes 7.697049999999997ms elapsed.
-[(1, 15.916971999999987, 95599, 'SUCCESS'), (2, 8.780680999999998, 45634, 'SUCCESS'), (9, 7.697049999999997, 44488, 'TIMEOUT'), (8, 7.498829999999998, 44454, 'SUCCESS'), (0, 6.921399000000002, 38806, 'SUCCESS'), (5, 3.399789, 20297, 'SUCCESS'), (3, 1.7785869999999981, 9007, 'SUCCESS'), (4, 0.8359770000000016, 4880, 'SUCCESS'), (7, 0.6817449999999975, 3960, 'SUCCESS'), (6, 0.2548990000000029, 1482, 'SUCCESS')]
-```
+# Data Generator
 
 The data stream generator I inserted 2 'FiCo' and the generator just randomly generates an index between 0 and len(stream) and spits out a word at a time.
+
+```python
+# in ipython
+from worker import DataGenerator
+
+# second argument defines the length
+In [5]: gen = DataGenerator('file.txt', 10)
+
+In [6]: for i in gen:
+   ...:     print(i)
+   ...:
+
+befrilled
+copartnership
+intimacy
+agree with
+flaring
+Vienna green
+enter
+peristyle
+spunkless
+get over
+free-lance writer
+```
